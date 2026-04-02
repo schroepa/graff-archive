@@ -1,0 +1,323 @@
+{
+  "version": 1,
+  "directus": "11.0.0",
+  "vendor": "postgres",
+  "collections": [
+    {
+      "collection": "writers",
+      "meta": {
+        "collection": "writers",
+        "icon": "person",
+        "note": "Writer-Profile (pseudonym, kein Klarname)",
+        "display_template": "{{tag}}",
+        "singleton": false
+      },
+      "schema": {
+        "name": "writers"
+      }
+    },
+    {
+      "collection": "crews",
+      "meta": {
+        "collection": "crews",
+        "icon": "group",
+        "note": "Crew-Profile",
+        "display_template": "{{name}}",
+        "singleton": false
+      },
+      "schema": {
+        "name": "crews"
+      }
+    },
+    {
+      "collection": "style_tags",
+      "meta": {
+        "collection": "style_tags",
+        "icon": "label",
+        "note": "Style-Klassifikationen (throwup, piece, burner, etc.)",
+        "display_template": "{{name}}",
+        "singleton": false
+      },
+      "schema": {
+        "name": "style_tags"
+      }
+    },
+    {
+      "collection": "photos",
+      "meta": {
+        "collection": "photos",
+        "icon": "photo_camera",
+        "note": "Archivierte Graffiti-Fotos",
+        "display_template": "{{location_city}} – {{year}}",
+        "sort_field": "uploaded_at",
+        "singleton": false
+      },
+      "schema": {
+        "name": "photos"
+      }
+    },
+    {
+      "collection": "photos_style_tags",
+      "meta": {
+        "collection": "photos_style_tags",
+        "hidden": true,
+        "junction_field": "style_tags_id"
+      },
+      "schema": {
+        "name": "photos_style_tags"
+      }
+    }
+  ],
+  "fields": [
+    {
+      "collection": "writers",
+      "field": "id",
+      "type": "uuid",
+      "meta": { "hidden": true, "readonly": true, "interface": "input", "special": ["uuid"] },
+      "schema": { "is_primary_key": true, "has_auto_increment": false }
+    },
+    {
+      "collection": "writers",
+      "field": "tag",
+      "type": "string",
+      "meta": { "interface": "input", "note": "Writer-Tag (Pseudonym)" },
+      "schema": { "is_unique": true, "is_nullable": false }
+    },
+    {
+      "collection": "writers",
+      "field": "crew",
+      "type": "uuid",
+      "meta": { "interface": "select-dropdown-m2o", "special": ["m2o"] },
+      "schema": { "is_nullable": true, "foreign_key_table": "crews", "foreign_key_column": "id" }
+    },
+    {
+      "collection": "writers",
+      "field": "active_since",
+      "type": "integer",
+      "meta": { "interface": "input", "note": "Jahr, seit dem aktiv" },
+      "schema": { "is_nullable": true }
+    },
+    {
+      "collection": "writers",
+      "field": "bio",
+      "type": "text",
+      "meta": { "interface": "input-multiline" },
+      "schema": { "is_nullable": true }
+    },
+
+    {
+      "collection": "crews",
+      "field": "id",
+      "type": "uuid",
+      "meta": { "hidden": true, "readonly": true, "interface": "input", "special": ["uuid"] },
+      "schema": { "is_primary_key": true, "has_auto_increment": false }
+    },
+    {
+      "collection": "crews",
+      "field": "name",
+      "type": "string",
+      "meta": { "interface": "input" },
+      "schema": { "is_unique": true, "is_nullable": false }
+    },
+    {
+      "collection": "crews",
+      "field": "founded",
+      "type": "integer",
+      "meta": { "interface": "input", "note": "Gründungsjahr" },
+      "schema": { "is_nullable": true }
+    },
+    {
+      "collection": "crews",
+      "field": "origin_city",
+      "type": "string",
+      "meta": { "interface": "input" },
+      "schema": { "is_nullable": true }
+    },
+
+    {
+      "collection": "style_tags",
+      "field": "id",
+      "type": "uuid",
+      "meta": { "hidden": true, "readonly": true, "interface": "input", "special": ["uuid"] },
+      "schema": { "is_primary_key": true, "has_auto_increment": false }
+    },
+    {
+      "collection": "style_tags",
+      "field": "name",
+      "type": "string",
+      "meta": { "interface": "input", "note": "z.B. throwup, piece, burner, tag, wildstyle" },
+      "schema": { "is_unique": true, "is_nullable": false }
+    },
+
+    {
+      "collection": "photos",
+      "field": "id",
+      "type": "uuid",
+      "meta": { "hidden": true, "readonly": true, "interface": "input", "special": ["uuid"] },
+      "schema": { "is_primary_key": true, "has_auto_increment": false }
+    },
+    {
+      "collection": "photos",
+      "field": "file",
+      "type": "uuid",
+      "meta": {
+        "interface": "file-image",
+        "special": ["file"],
+        "note": "WebP-Datei (EXIF bereits entfernt)"
+      },
+      "schema": { "is_nullable": false, "foreign_key_table": "directus_files", "foreign_key_column": "id" }
+    },
+    {
+      "collection": "photos",
+      "field": "writer",
+      "type": "uuid",
+      "meta": { "interface": "select-dropdown-m2o", "special": ["m2o"] },
+      "schema": { "is_nullable": true, "foreign_key_table": "writers", "foreign_key_column": "id" }
+    },
+    {
+      "collection": "photos",
+      "field": "crew",
+      "type": "uuid",
+      "meta": { "interface": "select-dropdown-m2o", "special": ["m2o"] },
+      "schema": { "is_nullable": true, "foreign_key_table": "crews", "foreign_key_column": "id" }
+    },
+    {
+      "collection": "photos",
+      "field": "location_city",
+      "type": "string",
+      "meta": { "interface": "input", "note": "Stadt – KEINE GPS-Koordinaten" },
+      "schema": { "is_nullable": true }
+    },
+    {
+      "collection": "photos",
+      "field": "location_country",
+      "type": "string",
+      "meta": { "interface": "input" },
+      "schema": { "is_nullable": true }
+    },
+    {
+      "collection": "photos",
+      "field": "year",
+      "type": "integer",
+      "meta": { "interface": "input", "note": "Jahr der Aufnahme" },
+      "schema": { "is_nullable": true }
+    },
+    {
+      "collection": "photos",
+      "field": "style_tags",
+      "type": "alias",
+      "meta": {
+        "interface": "list-m2m",
+        "special": ["m2m"],
+        "options": { "template": "{{style_tags_id.name}}" }
+      },
+      "schema": null
+    },
+    {
+      "collection": "photos",
+      "field": "moderation_status",
+      "type": "string",
+      "meta": {
+        "interface": "select-dropdown",
+        "options": {
+          "choices": [
+            { "text": "Ausstehend", "value": "pending" },
+            { "text": "Freigegeben", "value": "approved" },
+            { "text": "Abgelehnt", "value": "rejected" }
+          ]
+        },
+        "note": "Manuelle Moderation durch Admin"
+      },
+      "schema": { "is_nullable": false, "default_value": "pending" }
+    },
+    {
+      "collection": "photos",
+      "field": "flagged",
+      "type": "boolean",
+      "meta": { "interface": "boolean", "note": "Von Nutzern gemeldet" },
+      "schema": { "default_value": false }
+    },
+    {
+      "collection": "photos",
+      "field": "is_legal_wall",
+      "type": "boolean",
+      "meta": { "interface": "boolean", "note": "Legal Wall / Hall of Fame?" },
+      "schema": { "default_value": false }
+    },
+    {
+      "collection": "photos",
+      "field": "uploaded_at",
+      "type": "timestamp",
+      "meta": { "readonly": true, "special": ["date-created"], "interface": "datetime" },
+      "schema": { "is_nullable": false }
+    },
+
+    {
+      "collection": "photos_style_tags",
+      "field": "id",
+      "type": "integer",
+      "meta": { "hidden": true },
+      "schema": { "is_primary_key": true, "has_auto_increment": true }
+    },
+    {
+      "collection": "photos_style_tags",
+      "field": "photos_id",
+      "type": "uuid",
+      "meta": { "hidden": true },
+      "schema": { "foreign_key_table": "photos", "foreign_key_column": "id" }
+    },
+    {
+      "collection": "photos_style_tags",
+      "field": "style_tags_id",
+      "type": "uuid",
+      "meta": { "hidden": true },
+      "schema": { "foreign_key_table": "style_tags", "foreign_key_column": "id" }
+    }
+  ],
+  "relations": [
+    {
+      "collection": "writers",
+      "field": "crew",
+      "related_collection": "crews",
+      "meta": { "sort_field": null }
+    },
+    {
+      "collection": "photos",
+      "field": "writer",
+      "related_collection": "writers",
+      "meta": { "sort_field": null }
+    },
+    {
+      "collection": "photos",
+      "field": "crew",
+      "related_collection": "crews",
+      "meta": { "sort_field": null }
+    },
+    {
+      "collection": "photos",
+      "field": "file",
+      "related_collection": "directus_files",
+      "meta": { "sort_field": null }
+    },
+    {
+      "collection": "photos_style_tags",
+      "field": "photos_id",
+      "related_collection": "photos",
+      "meta": {
+        "junction_field": "style_tags_id",
+        "many_collection": "photos_style_tags",
+        "many_field": "photos_id",
+        "one_collection": "photos",
+        "one_field": "style_tags"
+      }
+    },
+    {
+      "collection": "photos_style_tags",
+      "field": "style_tags_id",
+      "related_collection": "style_tags",
+      "meta": {
+        "junction_field": "photos_id"
+      }
+    }
+  ]
+}
