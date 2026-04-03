@@ -16,8 +16,12 @@ export const directus = DIRECTUS_TOKEN
   ? createDirectus(DIRECTUS_URL).with(staticToken(DIRECTUS_TOKEN)).with(rest())
   : directusPublic;
 
+// Öffentliche URL für Browser – niemals DIRECTUS_INTERNAL_URL verwenden
+const DIRECTUS_PUBLIC_URL =
+  process.env.NEXT_PUBLIC_DIRECTUS_URL ?? 'http://localhost:8056';
+
 export function getFileUrl(fileId: string, params?: Record<string, string | number>): string {
-  const base = `${DIRECTUS_URL}/assets/${fileId}`;
+  const base = `${DIRECTUS_PUBLIC_URL}/assets/${fileId}`;
   if (!params) return base;
   const qs = new URLSearchParams(
     Object.entries(params).map(([k, v]) => [k, String(v)])
