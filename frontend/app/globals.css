@@ -1,26 +1,43 @@
 @import "tailwindcss";
 
-:root {
-  /* Streetfiles-Originalfarbe – exakt aus streetfiles.org (2008–2013) */
+/* === DARK MODE (Default) === */
+:root,
+[data-theme="dark"] {
   --accent: #198f97;
-  --accent-bright: #1faab3;          /* leicht heller für Hover/aktive States */
+  --accent-bright: #1faab3;
   --accent-dim: rgba(25, 143, 151, 0.14);
   --accent-muted: rgba(25, 143, 151, 0.06);
-  --accent-mint: rgba(218, 247, 217, 0.08); /* Nav-Hover aus Original: #daf7d9 */
 
-  /* Dark-Chrome – das Original nutzte #181818 als äußeren Rahmen */
   --bg: #181818;
   --bg-raised: #1e1e1e;
   --bg-card: #161616;
   --bg-border: #272727;
 
-  /* Typografie */
   --text-primary: #e2e2e2;
   --text-secondary: #7a7a7a;
   --text-dim: #404040;
 
-  /* Status */
-  --danger: #c10000;   /* exakt aus Original: message_error text */
+  --danger: #c10000;
+}
+
+/* === LIGHT MODE – Original Streetfiles.org (2008–2013) === */
+[data-theme="light"] {
+  --accent: #198f97;
+  --accent-bright: #1faab3;
+  --accent-dim: rgba(25, 143, 151, 0.12);
+  --accent-muted: rgba(25, 143, 151, 0.06);
+
+  /* Original: #f0f0f0 body bg, #ffffff content, #e0e0e0 borders */
+  --bg: #f0f0f0;
+  --bg-raised: #ffffff;
+  --bg-card: #fafafa;
+  --bg-border: #d8d8d8;
+
+  --text-primary: #1a1a1a;
+  --text-secondary: #555555;
+  --text-dim: #999999;
+
+  --danger: #c10000;
 }
 
 @theme inline {
