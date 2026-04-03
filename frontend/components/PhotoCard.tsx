@@ -12,22 +12,9 @@ interface PhotoCardProps {
 export default function PhotoCard({ photo }: PhotoCardProps) {
   const fileId = typeof photo.file === 'string' ? photo.file : photo.file?.id;
 
-  // Primär-Writer/-Crew + alle M2M-verknüpften
-  const primaryWriter = isWriter(photo.writer) ? photo.writer : null;
-  const allWriters: Writer[] = [
-    ...(primaryWriter ? [primaryWriter] : []),
-    ...(photo.writers ?? [])
-      .map(j => (typeof j.writers_id === 'object' && j.writers_id !== null ? j.writers_id as Writer : null))
-      .filter((w): w is Writer => w !== null && w.id !== primaryWriter?.id),
-  ];
-
-  const primaryCrew = isCrew(photo.crew) ? photo.crew : null;
-  const allCrews: Crew[] = [
-    ...(primaryCrew ? [primaryCrew] : []),
-    ...(photo.crews ?? [])
-      .map(j => (typeof j.crews_id === 'object' && j.crews_id !== null ? j.crews_id as Crew : null))
-      .filter((c): c is Crew => c !== null && c.id !== primaryCrew?.id),
-  ];
+  // Enriched M2M writers/crews (via junction table queries)
+  const allWriters: Array<{ id: string; tag: string }> = photo._allWriters ?? [];
+  const allCrews: Array<{ id: string; name: string }> = photo._allCrews ?? [];
 
   const styleTags = (photo.style_tags ?? [])
     .map((st) => {
