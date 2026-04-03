@@ -200,7 +200,7 @@ export default function LandingPage() {
                 className="font-mono font-bold uppercase tracking-widest px-8 py-4 transition-opacity hover:opacity-85"
                 style={{
                   background: 'var(--accent)',
-                  color: '#0d0d0d',
+                  color: '#181818',
                   fontSize: '12px',
                 }}
               >
@@ -379,7 +379,7 @@ export default function LandingPage() {
               className="font-mono font-bold uppercase tracking-widest px-8 py-4 inline-block transition-opacity hover:opacity-85"
               style={{
                 background: 'var(--accent)',
-                color: '#0d0d0d',
+                color: '#181818',
                 fontSize: '12px',
               }}
             >
