@@ -83,11 +83,7 @@ export async function POST(req: NextRequest) {
     const photoPayload: Record<string, unknown> = {
       file: directusFile.id,
       moderation_status: 'pending',
-      flagged: false,
       is_legal_wall,
-      // Primär-Writer/-Crew für Abwärtskompatibilität
-      writer: writerIds[0] ?? null,
-      crew: crewIds[0] ?? null,
     };
     if (location_city) photoPayload.location_city = location_city;
     if (location_country) photoPayload.location_country = location_country;
@@ -108,30 +104,33 @@ export async function POST(req: NextRequest) {
     if (!photoRes.ok) {
       const errText = await photoRes.text();
       console.error('Directus photo create error:', errText);
-      return NextResponse.json({ error: 'Fehler beim Anlegen des Foto-Eintrags.' }, { status: 502 });
+      return NextResponse.json(
+        { error: `Fehler beim Anlegen des Foto-Eintrags: ${errText}` },
+        { status: 502 }
+      );
     }
 
     const { data: photo } = await photoRes.json();
 
-    // M2M: alle Writers verknüpfen
-    if (writerIds.length > 1) {
+    // M2M: alle Writers in Junction-Tabelle eintragen (immer, nicht nur bei > 1)
+    if (writerIds.length > 0) {
       await Promise.all(writerIds.map(wid =>
         fetch(`${DIRECTUS_URL}/items/photos_writers`, {
           method: 'POST',
           headers: { Authorization: `Bearer ${DIRECTUS_TOKEN}`, 'Content-Type': 'application/json' },
           body: JSON.stringify({ photos_id: photo.id, writers_id: wid }),
-        })
+        }).then(r => { if (!r.ok) r.text().then(t => console.error('photos_writers error:', t)); })
       ));
     }
 
-    // M2M: alle Crews verknüpfen
-    if (crewIds.length > 1) {
+    // M2M: alle Crews in Junction-Tabelle eintragen (immer, nicht nur bei > 1)
+    if (crewIds.length > 0) {
       await Promise.all(crewIds.map(cid =>
         fetch(`${DIRECTUS_URL}/items/photos_crews`, {
           method: 'POST',
           headers: { Authorization: `Bearer ${DIRECTUS_TOKEN}`, 'Content-Type': 'application/json' },
           body: JSON.stringify({ photos_id: photo.id, crews_id: cid }),
-        })
+        }).then(r => { if (!r.ok) r.text().then(t => console.error('photos_crews error:', t)); })
       ));
     }
 
