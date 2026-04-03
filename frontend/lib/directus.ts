@@ -198,7 +198,7 @@ export async function getUserById(id: string): Promise<SfUser | null> {
   try {
     const user = await directus.request(
       readItem('sf_users', id, {
-        fields: ['id', 'tag', 'verified', 'bio', 'origin', 'active_since', 'created_week_hash'],
+        fields: ['id', 'tag', 'verified', 'challenge_code', 'bio', 'origin', 'active_since', 'created_week_hash'],
       })
     );
     return user as unknown as SfUser;
