@@ -91,7 +91,7 @@ export default async function PhotoPage({ params }: Props) {
             <div className="relative w-full" style={{ minHeight: '400px' }}>
               <Image
                 src={imageUrl}
-                alt={writer ? `${writer.tag}` : 'Graffiti'}
+                alt={allWriters[0] ? allWriters[0].tag : 'Graffiti'}
                 width={1200}
                 height={800}
                 className="w-full h-auto"
