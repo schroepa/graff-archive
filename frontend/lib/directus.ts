@@ -193,6 +193,47 @@ export async function getArchiveStats(): Promise<{
   };
 }
 
+// --- M2M-Enrichment: Writers + Crews direkt aus Junction-Tabellen ---
+
+async function enrichPhotosWithM2M(photos: Photo[]): Promise<Photo[]> {
+  if (photos.length === 0) return photos;
+  const ids = photos.map(p => p.id);
+
+  const [writerJunctions, crewJunctions] = await Promise.all([
+    directus.request(readItems('photos_writers', {
+      filter: { photos_id: { _in: ids } },
+      fields: ['photos_id', 'writers_id.id', 'writers_id.tag'],
+      limit: 1000,
+    })).catch(() => []),
+    directus.request(readItems('photos_crews', {
+      filter: { photos_id: { _in: ids } },
+      fields: ['photos_id', 'crews_id.id', 'crews_id.name'],
+      limit: 1000,
+    })).catch(() => []),
+  ]);
+
+  // Gruppieren nach photos_id
+  const writersByPhoto = new Map<string, Array<{id: string; tag: string}>>();
+  for (const j of writerJunctions as Array<{photos_id: string; writers_id: {id: string; tag: string}}>) {
+    const list = writersByPhoto.get(String(j.photos_id)) ?? [];
+    if (j.writers_id?.tag) list.push(j.writers_id);
+    writersByPhoto.set(String(j.photos_id), list);
+  }
+
+  const crewsByPhoto = new Map<string, Array<{id: string; name: string}>>();
+  for (const j of crewJunctions as Array<{photos_id: string; crews_id: {id: string; name: string}}>) {
+    const list = crewsByPhoto.get(String(j.photos_id)) ?? [];
+    if (j.crews_id?.name) list.push(j.crews_id);
+    crewsByPhoto.set(String(j.photos_id), list);
+  }
+
+  return photos.map(p => ({
+    ...p,
+    _allWriters: writersByPhoto.get(String(p.id)) ?? [],
+    _allCrews: crewsByPhoto.get(String(p.id)) ?? [],
+  })) as Photo[];
+}
+
 // --- Writer/Crew upsert (für Upload-Pipeline) ---
 
 export async function getOrCreateWriter(tag: string): Promise<string> {
