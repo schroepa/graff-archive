@@ -14,7 +14,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="de" style={{ background: "var(--bg)" }} suppressHydrationWarning>
+    <html lang="de" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: `
+          (function() {
+            try {
+              var t = localStorage.getItem('sf_theme') || 'dark';
+              document.documentElement.setAttribute('data-theme', t);
+            } catch(e) {}
+          })();
+        `}} />
+      </head>
       <body
         className="min-h-screen flex flex-col"
         style={{ background: "var(--bg)", color: "var(--text-primary)" }}
