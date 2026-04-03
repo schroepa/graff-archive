@@ -1,7 +1,11 @@
 import { createDirectus, rest, staticToken, readItems, readItem, createItem, updateItem, deleteItem, aggregate } from '@directus/sdk';
 import type { Photo, Writer, Crew, StyleTag, SfUser } from '@/types/directus';
 
-const DIRECTUS_URL = process.env.NEXT_PUBLIC_DIRECTUS_URL ?? 'http://localhost:8055';
+// Im Docker-Netzwerk: DIRECTUS_INTERNAL_URL (directus:8055), sonst Public-URL
+const DIRECTUS_URL =
+  process.env.DIRECTUS_INTERNAL_URL ??
+  process.env.NEXT_PUBLIC_DIRECTUS_URL ??
+  'http://localhost:8056';
 const DIRECTUS_TOKEN = process.env.DIRECTUS_TOKEN ?? '';
 
 // Öffentlicher Client (kein Token) – für approved-Fotos im Frontend
