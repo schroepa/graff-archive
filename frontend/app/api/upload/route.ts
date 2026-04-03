@@ -73,13 +73,11 @@ export async function POST(req: NextRequest) {
     const is_legal_wall = formData.get('is_legal_wall') === 'true';
     const style_tag_ids = formData.getAll('style_tags') as string[];
 
-    // Komma-getrennte Writer und Crews auflösen (je anlegen falls nicht vorhanden)
-    const writerTags = writerTag
-      ? writerTag.split(',').map(t => t.trim()).filter(Boolean)
-      : [];
-    const crewNames = crewName
-      ? crewName.split(',').map(t => t.trim()).filter(Boolean)
-      : [];
+    // Mehrere writer_tag / crew_name Felder (TagInput sendet je einen hidden input pro Chip)
+    const writerTags = formData.getAll('writer_tag')
+      .map(v => String(v).trim()).filter(Boolean);
+    const crewNames = formData.getAll('crew_name')
+      .map(v => String(v).trim()).filter(Boolean);
 
     const writerIds = await Promise.all(writerTags.map(t => getOrCreateWriter(t)));
     const crewIds = await Promise.all(crewNames.map(n => getOrCreateCrew(n)));
