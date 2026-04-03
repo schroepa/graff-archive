@@ -108,7 +108,8 @@ export async function getPhoto(id: string): Promise<Photo> {
     })
   );
 
-  return photo as unknown as Photo;
+  const enriched = await enrichPhotosWithM2M([photo as unknown as Photo]);
+  return enriched[0];
 }
 
 // --- Writer-Queries ---
