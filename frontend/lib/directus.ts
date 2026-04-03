@@ -1,5 +1,5 @@
 import { createDirectus, rest, staticToken, readItems, readItem, createItem, updateItem, deleteItem, aggregate } from '@directus/sdk';
-import type { Photo, Writer, Crew, StyleTag, SfUser } from '@/types/directus';
+import type { Photo, Writer, Crew, StyleTag, SfUser, SfComment } from '@/types/directus';
 
 // Im Docker-Netzwerk: DIRECTUS_INTERNAL_URL (directus:8055), sonst Public-URL
 const DIRECTUS_URL =
