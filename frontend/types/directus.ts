@@ -81,6 +81,15 @@ export interface SfSession {
   expires_at: string;
 }
 
+export interface SfComment {
+  id: string;
+  photo_id: string;
+  author_tag: string;
+  body: string;
+  created_at: string;
+  moderation_status: 'approved' | 'pending' | 'rejected';
+}
+
 // Hilfsfunktionen für Type Narrowing
 export function isWriter(v: string | Writer | null): v is Writer {
   return typeof v === 'object' && v !== null && 'tag' in v;
