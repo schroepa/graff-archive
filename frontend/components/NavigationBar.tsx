@@ -23,14 +23,17 @@ export default function NavigationBar() {
         <div className="flex items-center gap-6">
           <Link
             href="/archiv"
-            style={{
-              fontFamily: 'var(--font-mono)',
-              color: 'var(--text-secondary)',
-              fontSize: '11px',
-            }}
+            style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-secondary)', fontSize: '11px' }}
             className="uppercase tracking-widest transition-colors hover:text-[var(--accent)]"
           >
             Archiv
+          </Link>
+          <Link
+            href="/karte"
+            style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-secondary)', fontSize: '11px' }}
+            className="uppercase tracking-widest transition-colors hover:text-[var(--accent)] hidden sm:block"
+          >
+            Karte
           </Link>
           <NavAuth />
         </div>
