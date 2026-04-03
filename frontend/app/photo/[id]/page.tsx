@@ -16,9 +16,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
   try {
     const photo = await getPhoto(id);
-    const writer = isWriter(photo.writer) ? photo.writer.tag : null;
+    const firstWriter = photo._allWriters?.[0]?.tag ?? (isWriter(photo.writer) ? photo.writer.tag : null);
     return {
-      title: [writer, photo.location_city, photo.year].filter(Boolean).join(' · ') + ' – Streetfiles',
+      title: [firstWriter, photo.location_city, photo.year].filter(Boolean).join(' · ') + ' – Streetfiles',
     };
   } catch {
     return { title: 'Foto – Streetfiles' };
