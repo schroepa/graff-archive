@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const DIRECTUS_URL = process.env.NEXT_PUBLIC_DIRECTUS_URL ?? 'http://localhost:8056';
+const DIRECTUS_URL = process.env.DIRECTUS_INTERNAL_URL ?? process.env.NEXT_PUBLIC_DIRECTUS_URL ?? 'http://localhost:8056';
 const DIRECTUS_TOKEN = process.env.DIRECTUS_TOKEN ?? '';
 
 export async function POST(
