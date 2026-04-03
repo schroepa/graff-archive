@@ -92,26 +92,28 @@ export default function PhotoCard({ photo }: PhotoCardProps) {
 
       {/* Metadaten */}
       <div className="p-3 space-y-2">
-        {/* Writer / Crew */}
-        <div className="flex items-baseline gap-2">
-          {writer && (
+        {/* Writers */}
+        <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+          {allWriters.map((w) => (
             <Link
-              href={`/writer/${writer.tag}`}
+              key={w.id}
+              href={`/writer/${w.tag}`}
               style={{ fontFamily: 'var(--font-mono)', color: 'var(--accent)', fontSize: '13px' }}
               className="font-bold hover:opacity-80 transition-opacity"
             >
-              {writer.tag}
+              {w.tag}
             </Link>
-          )}
-          {crew && (
+          ))}
+          {allCrews.map((c) => (
             <Link
-              href={`/crew/${encodeURIComponent(crew.name)}`}
+              key={c.id}
+              href={`/crew/${encodeURIComponent(c.name)}`}
               style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-secondary)', fontSize: '11px' }}
               className="hover:text-[var(--text-primary)] transition-colors"
             >
-              {crew.name}
+              {c.name}
             </Link>
-          )}
+          ))}
         </div>
 
         {/* Ort & Jahr */}
