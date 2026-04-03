@@ -1,24 +1,26 @@
 @import "tailwindcss";
 
 :root {
-  /* Streetfiles-Teal – direkt vom Original (2008–2013) abgeleitet */
-  --accent: #3cc8c4;
-  --accent-dim: rgba(60, 200, 196, 0.12);
-  --accent-muted: rgba(60, 200, 196, 0.06);
+  /* Streetfiles-Originalfarbe – exakt aus streetfiles.org (2008–2013) */
+  --accent: #198f97;
+  --accent-bright: #1faab3;          /* leicht heller für Hover/aktive States */
+  --accent-dim: rgba(25, 143, 151, 0.14);
+  --accent-muted: rgba(25, 143, 151, 0.06);
+  --accent-mint: rgba(218, 247, 217, 0.08); /* Nav-Hover aus Original: #daf7d9 */
 
-  /* Hintergründe */
-  --bg: #0d0d0d;
-  --bg-raised: #141414;
-  --bg-card: #111111;
-  --bg-border: #1e1e1e;
+  /* Dark-Chrome – das Original nutzte #181818 als äußeren Rahmen */
+  --bg: #181818;
+  --bg-raised: #1e1e1e;
+  --bg-card: #161616;
+  --bg-border: #272727;
 
   /* Typografie */
-  --text-primary: #e4e4e4;
+  --text-primary: #e2e2e2;
   --text-secondary: #7a7a7a;
-  --text-dim: #3a3a3a;
+  --text-dim: #404040;
 
   /* Status */
-  --danger: #e05555;
+  --danger: #c10000;   /* exakt aus Original: message_error text */
 }
 
 @theme inline {
@@ -62,11 +64,11 @@ body {
   background: var(--bg-border);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #333;
+  background: #3a3a3a;
 }
 
-/* Selection */
+/* Selection – Mint-Grün aus Original-Nav-Hover */
 ::selection {
   background: var(--accent-dim);
-  color: var(--accent);
+  color: var(--accent-bright);
 }
