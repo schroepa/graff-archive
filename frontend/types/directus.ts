@@ -20,11 +20,21 @@ export interface StyleTag {
 
 export type ModerationStatus = 'pending' | 'approved' | 'rejected';
 
+export interface PhotoWriterJunction {
+  writers_id: string | Writer;
+}
+
+export interface PhotoCrewJunction {
+  crews_id: string | Crew;
+}
+
 export interface Photo {
   id: string;
   file: string | DirectusFile;
   writer: string | Writer | null;
   crew: string | Crew | null;
+  writers?: PhotoWriterJunction[];
+  crews?: PhotoCrewJunction[];
   location_city: string | null;
   location_country: string | null;
   year: number | null;
