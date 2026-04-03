@@ -40,7 +40,7 @@ export async function POST(req: Request) {
 
     // Upload zu Directus (EXIF wird nicht extra gestripped – das ist ein Handstyle-Beweis,
     // der sowieso nach Verifikation kryptografisch überschrieben wird)
-    const DIRECTUS_URL = process.env.NEXT_PUBLIC_DIRECTUS_URL ?? 'http://localhost:8056';
+    const DIRECTUS_URL = process.env.DIRECTUS_INTERNAL_URL ?? process.env.NEXT_PUBLIC_DIRECTUS_URL ?? 'http://localhost:8056';
     const DIRECTUS_TOKEN = process.env.DIRECTUS_TOKEN ?? '';
 
     const uploadForm = new FormData();
