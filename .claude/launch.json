@@ -3,10 +3,11 @@
   "configurations": [
     {
       "name": "streetfiles-frontend",
-      "runtimeExecutable": "/Users/ptrck/.nvm/versions/node/v22.18.0/bin/npm",
-      "runtimeArgs": ["run", "dev"],
+      "runtimeExecutable": "/Users/ptrck/.nvm/versions/node/v22.18.0/bin/node",
+      "runtimeArgs": ["/Users/ptrck/.nvm/versions/node/v22.18.0/bin/npm", "run", "dev"],
       "port": 3000,
-      "autoPort": true
+      "autoPort": true,
+      "cwd": "/Users/ptrck/Documents/Streetfiles/frontend"
     }
   ]
 }
