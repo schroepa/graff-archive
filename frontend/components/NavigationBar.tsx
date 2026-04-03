@@ -36,6 +36,7 @@ export default function NavigationBar() {
           >
             Karte
           </Link>
+          <ThemeToggle />
           <NavAuth />
         </div>
       </div>
