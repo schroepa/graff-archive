@@ -1,4 +1,4 @@
-import { createDirectus, rest, staticToken, readItems, readItem, createItem, updateItem, deleteItem } from '@directus/sdk';
+import { createDirectus, rest, staticToken, readItems, readItem, createItem, updateItem, deleteItem, aggregate } from '@directus/sdk';
 import type { Photo, Writer, Crew, StyleTag, SfUser } from '@/types/directus';
 
 const DIRECTUS_URL = process.env.NEXT_PUBLIC_DIRECTUS_URL ?? 'http://localhost:8055';
