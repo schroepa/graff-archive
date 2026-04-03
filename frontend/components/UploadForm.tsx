@@ -147,41 +147,19 @@ export default function UploadForm({ styleTags }: UploadFormProps) {
         </div>
       </div>
 
-      {/* Writer Tag */}
-      <div>
-        <label style={labelStyle} htmlFor="writer_tag">Writer Tag(s)</label>
-        <p style={{ fontFamily: 'var(--font-mono)', fontSize: '9px', color: 'var(--text-dim)', marginBottom: '6px' }}
-           className="uppercase tracking-widest">
-          Mehrere mit Komma trennen – z.B. SEAK, DAIM, OZER
-        </p>
-        <input
-          type="text"
-          id="writer_tag"
-          name="writer_tag"
-          placeholder="z.B. SEAK, DAIM"
-          style={inputStyle}
-          autoComplete="off"
-          spellCheck={false}
-        />
-      </div>
+      {/* Writer Tags */}
+      <TagInput
+        name="writer_tag"
+        label="Writer Tag(s)"
+        placeholder="z.B. SEAK"
+      />
 
       {/* Crew */}
-      <div>
-        <label style={labelStyle} htmlFor="crew_name">Crew(s)</label>
-        <p style={{ fontFamily: 'var(--font-mono)', fontSize: '9px', color: 'var(--text-dim)', marginBottom: '6px' }}
-           className="uppercase tracking-widest">
-          Mehrere mit Komma trennen – z.B. MAD, FBI
-        </p>
-        <input
-          type="text"
-          id="crew_name"
-          name="crew_name"
-          placeholder="z.B. MAD, FBI"
-          style={inputStyle}
-          autoComplete="off"
-          spellCheck={false}
-        />
-      </div>
+      <TagInput
+        name="crew_name"
+        label="Crew(s)"
+        placeholder="z.B. MAD"
+      />
 
       {/* Ort */}
       <div className="grid grid-cols-2 gap-4">
