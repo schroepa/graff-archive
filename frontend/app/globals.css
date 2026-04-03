@@ -1,15 +1,24 @@
 @import "tailwindcss";
 
 :root {
+  /* Streetfiles-Teal – direkt vom Original (2008–2013) abgeleitet */
+  --accent: #3cc8c4;
+  --accent-dim: rgba(60, 200, 196, 0.12);
+  --accent-muted: rgba(60, 200, 196, 0.06);
+
+  /* Hintergründe */
   --bg: #0d0d0d;
-  --bg-raised: #161616;
-  --bg-border: #222222;
-  --text-primary: #e8e8e8;
-  --text-secondary: #888888;
-  --text-dim: #444444;
-  --accent: #c8ff00;
-  --accent-dim: rgba(200, 255, 0, 0.12);
-  --danger: #ff4444;
+  --bg-raised: #141414;
+  --bg-card: #111111;
+  --bg-border: #1e1e1e;
+
+  /* Typografie */
+  --text-primary: #e4e4e4;
+  --text-secondary: #7a7a7a;
+  --text-dim: #3a3a3a;
+
+  /* Status */
+  --danger: #e05555;
 }
 
 @theme inline {
@@ -53,7 +62,7 @@ body {
   background: var(--bg-border);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--text-dim);
+  background: #333;
 }
 
 /* Selection */
