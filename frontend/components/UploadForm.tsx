@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, type ChangeEvent, type FormEvent } from 'react';
+import TagInput from './TagInput';
 
 interface StyleTag {
   id: string;
