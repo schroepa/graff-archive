@@ -65,8 +65,6 @@ export async function POST(req: NextRequest) {
     const { data: directusFile } = await uploadRes.json();
 
     // --- Photo-Record in Directus anlegen ---
-    const writerTag = (formData.get('writer_tag') as string | null)?.trim() || null;
-    const crewName = (formData.get('crew_name') as string | null)?.trim() || null;
     const location_city = formData.get('location_city') as string | null;
     const location_country = formData.get('location_country') as string | null;
     const year = formData.get('year') as string | null;
