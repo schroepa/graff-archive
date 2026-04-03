@@ -181,6 +181,28 @@ export async function getArchiveStats(): Promise<{
   };
 }
 
+// --- Writer/Crew upsert (für Upload-Pipeline) ---
+
+export async function getOrCreateWriter(tag: string): Promise<string> {
+  const existing = await getWriter(tag);
+  if (existing) return existing.id;
+  const created = await directus.request(createItem('writers', { tag }));
+  return (created as { id: string }).id;
+}
+
+export async function getOrCreateCrew(name: string): Promise<string> {
+  const crews = await directus.request(
+    readItems('crews', {
+      filter: { name: { _eq: name } },
+      limit: 1,
+      fields: ['id'],
+    })
+  );
+  if (crews[0]) return (crews[0] as { id: string }).id;
+  const created = await directus.request(createItem('crews', { name }));
+  return (created as { id: string }).id;
+}
+
 // --- User-Queries ---
 
 export async function getUserByTag(tag: string): Promise<SfUser | null> {
