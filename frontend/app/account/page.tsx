@@ -246,12 +246,20 @@ export default function AccountPage() {
           <p className="font-mono text-xs text-[var(--text-dim)] uppercase tracking-widest mb-4">
             Archiv
           </p>
-          <Link
-            href="/upload"
-            className="block font-mono text-sm text-[var(--text)] hover:text-[var(--accent)] transition-colors"
-          >
-            → Foto hochladen
-          </Link>
+          <div className="space-y-3">
+            <Link
+              href="/upload"
+              className="block font-mono text-sm text-[var(--text)] hover:text-[var(--accent)] transition-colors"
+            >
+              → Foto hochladen
+            </Link>
+            <Link
+              href={`/writer/${encodeURIComponent(user.tag)}`}
+              className="block font-mono text-sm text-[var(--text)] hover:text-[var(--accent)] transition-colors"
+            >
+              → Künstlerseite ansehen
+            </Link>
+          </div>
         </div>
       )}
 
