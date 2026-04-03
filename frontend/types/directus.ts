@@ -35,6 +35,8 @@ export interface Photo {
   crew: string | Crew | null;
   writers?: PhotoWriterJunction[];
   crews?: PhotoCrewJunction[];
+  _allWriters?: Array<{ id: string; tag: string }>;
+  _allCrews?: Array<{ id: string; name: string }>;
   location_city: string | null;
   location_country: string | null;
   year: number | null;
