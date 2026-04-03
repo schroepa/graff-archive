@@ -66,6 +66,32 @@
       "schema": {
         "name": "photos_style_tags"
       }
+    },
+    {
+      "collection": "sf_users",
+      "meta": {
+        "collection": "sf_users",
+        "icon": "person_outline",
+        "note": "Pseudonyme Writer-Accounts (kein Klarname, kein OAuth)",
+        "display_template": "{{tag}}",
+        "singleton": false
+      },
+      "schema": {
+        "name": "sf_users"
+      }
+    },
+    {
+      "collection": "sf_sessions",
+      "meta": {
+        "collection": "sf_sessions",
+        "icon": "key",
+        "note": "JWT-Session-Hashes (Token selbst wird nicht gespeichert)",
+        "hidden": true,
+        "singleton": false
+      },
+      "schema": {
+        "name": "sf_sessions"
+      }
     }
   ],
   "fields": [
