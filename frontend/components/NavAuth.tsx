@@ -41,7 +41,7 @@ export default function NavAuth() {
             style={{
               fontFamily: 'var(--font-mono)',
               fontSize: '11px',
-              color: 'var(--bg)',
+              color: '#181818',
               background: 'var(--accent)',
               padding: '4px 12px',
               letterSpacing: '0.1em',
@@ -69,7 +69,7 @@ export default function NavAuth() {
         style={{
           fontFamily: 'var(--font-mono)',
           fontSize: '11px',
-          color: 'var(--bg)',
+          color: '#181818',
           background: 'var(--accent)',
           padding: '4px 12px',
           letterSpacing: '0.1em',
