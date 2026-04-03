@@ -246,20 +246,12 @@ export default function AccountPage() {
           <p className="font-mono text-xs text-[var(--text-dim)] uppercase tracking-widest mb-4">
             Archiv
           </p>
-          <div className="space-y-3">
-            <Link
-              href="/upload"
-              className="block font-mono text-sm text-[var(--text)] hover:text-[var(--accent)] transition-colors"
-            >
-              → Foto hochladen
-            </Link>
-            <Link
-              href={`/writer/${user.tag}`}
-              className="block font-mono text-sm text-[var(--text)] hover:text-[var(--accent)] transition-colors"
-            >
-              → Dein Profil ansehen
-            </Link>
-          </div>
+          <Link
+            href="/upload"
+            className="block font-mono text-sm text-[var(--text)] hover:text-[var(--accent)] transition-colors"
+          >
+            → Foto hochladen
+          </Link>
         </div>
       )}
 
