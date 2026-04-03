@@ -38,8 +38,9 @@ export default async function PhotoPage({ params }: Props) {
   if (photo.moderation_status !== 'approved') notFound();
 
   const fileId = typeof photo.file === 'string' ? photo.file : photo.file?.id;
-  const writer = isWriter(photo.writer) ? photo.writer : null;
-  const crew = isCrew(photo.crew) ? photo.crew : null;
+
+  const allWriters = photo._allWriters ?? [];
+  const allCrews = photo._allCrews ?? [];
 
   const styleTags = (photo.style_tags ?? [])
     .map((st) => {
@@ -51,17 +52,29 @@ export default async function PhotoPage({ params }: Props) {
 
   const imageUrl = fileId ? getFileUrl(fileId) : null;
 
+  const writersValue = allWriters.length > 0 ? (
+    <span className="flex flex-wrap gap-x-2">
+      {allWriters.map((w) => (
+        <Link key={w.id} href={`/writer/${w.tag}`} style={{ color: 'var(--accent)' }} className="hover:opacity-80">
+          {w.tag}
+        </Link>
+      ))}
+    </span>
+  ) : null;
+
+  const crewsValue = allCrews.length > 0 ? (
+    <span className="flex flex-wrap gap-x-2">
+      {allCrews.map((c) => (
+        <Link key={c.id} href={`/crew/${encodeURIComponent(c.name)}`} style={{ color: 'var(--text-secondary)' }} className="hover:text-[var(--text-primary)] transition-colors">
+          {c.name}
+        </Link>
+      ))}
+    </span>
+  ) : null;
+
   const metaRows = [
-    { label: 'Writer', value: writer ? (
-      <Link href={`/writer/${writer.tag}`} style={{ color: 'var(--accent)' }} className="hover:opacity-80">
-        {writer.tag}
-      </Link>
-    ) : null },
-    { label: 'Crew', value: crew ? (
-      <Link href={`/crew/${encodeURIComponent(crew.name)}`} style={{ color: 'var(--text-secondary)' }} className="hover:text-[var(--text-primary)] transition-colors">
-        {crew.name}
-      </Link>
-    ) : null },
+    { label: 'Writer', value: writersValue },
+    { label: 'Crew', value: crewsValue },
     { label: 'Stadt', value: photo.location_city },
     { label: 'Land', value: photo.location_country },
     { label: 'Jahr', value: photo.year },
