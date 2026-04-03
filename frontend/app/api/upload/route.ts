@@ -4,12 +4,7 @@ import { processImage } from '@/lib/image';
 const DIRECTUS_URL = process.env.NEXT_PUBLIC_DIRECTUS_URL ?? 'http://localhost:8055';
 const DIRECTUS_TOKEN = process.env.DIRECTUS_TOKEN ?? '';
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
-
+// bodyParser ist in Next.js App Router Route Handlers standardmäßig deaktiviert
 export async function POST(req: NextRequest) {
   if (!DIRECTUS_TOKEN) {
     return NextResponse.json(
