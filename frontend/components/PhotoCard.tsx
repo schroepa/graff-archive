@@ -59,7 +59,7 @@ export default function PhotoCard({ photo }: PhotoCardProps) {
         {imageUrl ? (
           <Image
             src={imageUrl}
-            alt={writer ? `${writer.tag} – ${meta}` : meta || 'Graffiti'}
+            alt={allWriters[0] ? `${allWriters[0].tag} – ${meta}` : meta || 'Graffiti'}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
