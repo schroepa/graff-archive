@@ -6,7 +6,7 @@ import { isWriter, isCrew, isStyleTag } from '@/types/directus';
 import BurnerButton from '@/components/BurnerButton';
 import type { Metadata } from 'next';
 
-export const revalidate = 300;
+export const dynamic = 'force-dynamic';
 
 interface Props {
   params: Promise<{ id: string }>;
