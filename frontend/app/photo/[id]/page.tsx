@@ -41,8 +41,8 @@ export default async function PhotoPage({ params }: Props) {
   const writer = isWriter(photo.writer) ? photo.writer : null;
   const crew = isCrew(photo.crew) ? photo.crew : null;
 
-  const styleTags = photo.style_tags
-    ?.map((st) => {
+  const styleTags = (photo.style_tags ?? [])
+    .map((st) => {
       if (typeof st === 'string') return null;
       const tag = st.style_tags_id;
       return isStyleTag(tag) ? tag.name : null;
