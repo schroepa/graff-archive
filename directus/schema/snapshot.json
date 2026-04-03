@@ -306,6 +306,120 @@
       "type": "uuid",
       "meta": { "hidden": true },
       "schema": { "foreign_key_table": "style_tags", "foreign_key_column": "id" }
+    },
+
+    {
+      "collection": "sf_users",
+      "field": "id",
+      "type": "uuid",
+      "meta": { "hidden": true, "readonly": true, "interface": "input", "special": ["uuid"] },
+      "schema": { "is_primary_key": true, "has_auto_increment": false }
+    },
+    {
+      "collection": "sf_users",
+      "field": "tag",
+      "type": "string",
+      "meta": { "interface": "input", "note": "Writer-Tag (Pseudonym, öffentlich sichtbar)" },
+      "schema": { "is_unique": true, "is_nullable": false }
+    },
+    {
+      "collection": "sf_users",
+      "field": "password_hash",
+      "type": "string",
+      "meta": { "interface": "input", "hidden": true, "note": "bcrypt-Hash der Recovery Phrase" },
+      "schema": { "is_nullable": false }
+    },
+    {
+      "collection": "sf_users",
+      "field": "challenge_code",
+      "type": "string",
+      "meta": { "interface": "input", "note": "SF-XXXX Handstyle-Verifikations-Code" },
+      "schema": { "is_nullable": true }
+    },
+    {
+      "collection": "sf_users",
+      "field": "handstyle_file",
+      "type": "uuid",
+      "meta": { "interface": "file-image", "special": ["file"], "note": "Handstyle-Beweis-Foto (vor Verifikation)" },
+      "schema": { "is_nullable": true, "foreign_key_table": "directus_files", "foreign_key_column": "id" }
+    },
+    {
+      "collection": "sf_users",
+      "field": "verified",
+      "type": "boolean",
+      "meta": { "interface": "boolean", "note": "Durch Admin-Handstyle-Prüfung verifiziert" },
+      "schema": { "default_value": false, "is_nullable": false }
+    },
+    {
+      "collection": "sf_users",
+      "field": "bio",
+      "type": "text",
+      "meta": { "interface": "input-multiline" },
+      "schema": { "is_nullable": true }
+    },
+    {
+      "collection": "sf_users",
+      "field": "origin",
+      "type": "string",
+      "meta": { "interface": "input", "note": "Herkunftsstadt (optional)" },
+      "schema": { "is_nullable": true }
+    },
+    {
+      "collection": "sf_users",
+      "field": "active_since",
+      "type": "integer",
+      "meta": { "interface": "input", "note": "Jahr, seit dem aktiv" },
+      "schema": { "is_nullable": true }
+    },
+    {
+      "collection": "sf_users",
+      "field": "created_week_hash",
+      "type": "string",
+      "meta": { "interface": "input", "hidden": true, "note": "Privacy-Hash: Woche der Registrierung, kein exakter Timestamp" },
+      "schema": { "is_nullable": true }
+    },
+    {
+      "collection": "sf_users",
+      "field": "created_at",
+      "type": "timestamp",
+      "meta": { "readonly": true, "special": ["date-created"], "interface": "datetime" },
+      "schema": { "is_nullable": false }
+    },
+
+    {
+      "collection": "sf_sessions",
+      "field": "id",
+      "type": "uuid",
+      "meta": { "hidden": true, "readonly": true, "interface": "input", "special": ["uuid"] },
+      "schema": { "is_primary_key": true, "has_auto_increment": false }
+    },
+    {
+      "collection": "sf_sessions",
+      "field": "user_id",
+      "type": "uuid",
+      "meta": { "hidden": true, "interface": "select-dropdown-m2o", "special": ["m2o"] },
+      "schema": { "is_nullable": false, "foreign_key_table": "sf_users", "foreign_key_column": "id" }
+    },
+    {
+      "collection": "sf_sessions",
+      "field": "token_hash",
+      "type": "string",
+      "meta": { "hidden": true, "interface": "input", "note": "SHA-256 des JWT (Token selbst wird nicht gespeichert)" },
+      "schema": { "is_nullable": false }
+    },
+    {
+      "collection": "sf_sessions",
+      "field": "expires_at",
+      "type": "timestamp",
+      "meta": { "interface": "datetime" },
+      "schema": { "is_nullable": false }
+    },
+    {
+      "collection": "sf_sessions",
+      "field": "created_at",
+      "type": "timestamp",
+      "meta": { "readonly": true, "special": ["date-created"], "interface": "datetime" },
+      "schema": { "is_nullable": false }
     }
   ],
   "relations": [
