@@ -23,7 +23,7 @@ services:
       postgres:
         condition: service_healthy
     environment:
-      SECRET: ${DIRECTUS_SECRET:-replace-with-a-secure-random-string}
+      SECRET: ${DIRECTUS_SECRET:-change-this-to-a-secure-random-string-min-32}
       DB_CLIENT: pg
       DB_HOST: postgres
       DB_PORT: 5432
@@ -36,12 +36,32 @@ services:
       STORAGE_LOCATIONS: local
       STORAGE_LOCAL_ROOT: /directus/uploads
       CORS_ENABLED: "true"
-      CORS_ORIGIN: "http://localhost:3000"
-      # Kein Telemetry
+      CORS_ORIGIN: "true"   # erlaubt alle Origins; in Prod auf Domain einschränken
       TELEMETRY: "false"
     volumes:
       - directus_uploads:/directus/uploads
       - directus_extensions:/directus/extensions
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        # NEXT_PUBLIC_* werden zur Build-Zeit in das Image gebrannt
+        NEXT_PUBLIC_DIRECTUS_URL: ${NEXT_PUBLIC_DIRECTUS_URL:-http://localhost:8056}
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    depends_on:
+      - directus
+    environment:
+      # Server-seitige Vars (nicht im Browser sichtbar)
+      # Intern im Docker-Netzwerk: directus:8055 (ohne externen Port-Mapping)
+      DIRECTUS_INTERNAL_URL: http://directus:8055
+      DIRECTUS_TOKEN: ${DIRECTUS_TOKEN:-streetfiles-dev-token-2024}
+      JWT_SECRET: ${JWT_SECRET:-change-this-to-a-secure-random-string-min-32}
+      WEEK_HASH_SECRET: ${WEEK_HASH_SECRET:-change-this-week-secret}
+      NODE_ENV: production
 
 volumes:
   postgres_data:
