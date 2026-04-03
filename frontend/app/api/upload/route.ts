@@ -92,7 +92,7 @@ export async function POST(req: NextRequest) {
       photoPayload.style_tags = style_tag_ids.map((id) => ({ style_tags_id: id }));
     }
 
-    const photoRes = await fetch(`${DIRECTUS_URL}/items/photos`, {
+    const photoRes = await fetch(`${DIRECTUS_URL}/items/photos?fields=id`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${DIRECTUS_TOKEN}`,
