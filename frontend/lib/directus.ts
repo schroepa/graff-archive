@@ -161,7 +161,7 @@ export async function getArchiveStats(): Promise<{
         location_city: { _nnull: true },
       },
       fields: ['location_city'],
-      limit: -1,
+      limit: 1000,
     })
   );
   const cities = new Set(
