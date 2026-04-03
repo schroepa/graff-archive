@@ -466,6 +466,12 @@
       "meta": {
         "junction_field": "photos_id"
       }
+    },
+    {
+      "collection": "sf_sessions",
+      "field": "user_id",
+      "related_collection": "sf_users",
+      "meta": { "sort_field": null }
     }
   ]
 }
