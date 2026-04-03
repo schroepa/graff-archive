@@ -304,3 +304,49 @@ export async function deleteSession(tokenHash: string): Promise<void> {
     await directus.request(deleteItem('sf_sessions', (sessions[0] as { id: string }).id));
   }
 }
+
+export async function getSessionByTokenHash(tokenHash: string): Promise<{ expires_at: string } | null> {
+  const sessions = await directus.request(
+    readItems('sf_sessions', {
+      filter: { token_hash: { _eq: tokenHash } },
+      limit: 1,
+      fields: ['expires_at'],
+    })
+  );
+  return (sessions[0] as { expires_at: string }) ?? null;
+}
+
+// --- Comment-Queries ---
+
+export async function getComments(photoId: string): Promise<SfComment[]> {
+  try {
+    const comments = await directus.request(
+      readItems('sf_comments', {
+        filter: {
+          photo_id: { _eq: photoId },
+          moderation_status: { _eq: 'approved' },
+        },
+        sort: ['created_at'],
+        fields: ['id', 'photo_id', 'author_tag', 'body', 'created_at'],
+        limit: 200,
+      })
+    );
+    return comments as unknown as SfComment[];
+  } catch {
+    return [];
+  }
+}
+
+export async function createComment(data: {
+  photo_id: string;
+  author_tag: string;
+  body: string;
+}): Promise<SfComment> {
+  const comment = await directus.request(
+    createItem('sf_comments', {
+      ...data,
+      moderation_status: 'approved',
+    })
+  );
+  return comment as unknown as SfComment;
+}
