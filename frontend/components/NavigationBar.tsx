@@ -21,7 +21,7 @@ export default function NavigationBar() {
 
         <div className="flex items-center gap-6">
           <Link
-            href="/"
+            href="/archiv"
             style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-secondary)', fontSize: '11px' }}
             className="uppercase tracking-widest hover:text-[var(--text-primary)] transition-colors"
           >
