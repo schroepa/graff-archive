@@ -117,6 +117,28 @@ export async function POST(req: NextRequest) {
 
     const { data: photo } = await photoRes.json();
 
+    // M2M: alle Writers verknüpfen
+    if (writerIds.length > 1) {
+      await Promise.all(writerIds.map(wid =>
+        fetch(`${DIRECTUS_URL}/items/photos_writers`, {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${DIRECTUS_TOKEN}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ photos_id: photo.id, writers_id: wid }),
+        })
+      ));
+    }
+
+    // M2M: alle Crews verknüpfen
+    if (crewIds.length > 1) {
+      await Promise.all(crewIds.map(cid =>
+        fetch(`${DIRECTUS_URL}/items/photos_crews`, {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${DIRECTUS_TOKEN}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ photos_id: photo.id, crews_id: cid }),
+        })
+      ));
+    }
+
     return NextResponse.json({
       success: true,
       photo_id: photo.id,
