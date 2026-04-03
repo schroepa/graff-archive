@@ -55,7 +55,7 @@ export default function CommentSection({ photoId }: CommentSectionProps) {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ photo_id: photoId, text: text.trim() }),
+        body: JSON.stringify({ photo_id: String(photoId), text: text.trim() }),
       });
 
       const json = await res.json();
