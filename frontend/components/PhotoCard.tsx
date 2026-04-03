@@ -11,8 +11,23 @@ interface PhotoCardProps {
 
 export default function PhotoCard({ photo }: PhotoCardProps) {
   const fileId = typeof photo.file === 'string' ? photo.file : photo.file?.id;
-  const writer = isWriter(photo.writer) ? photo.writer : null;
-  const crew = isCrew(photo.crew) ? photo.crew : null;
+
+  // Primär-Writer/-Crew + alle M2M-verknüpften
+  const primaryWriter = isWriter(photo.writer) ? photo.writer : null;
+  const allWriters: Writer[] = [
+    ...(primaryWriter ? [primaryWriter] : []),
+    ...(photo.writers ?? [])
+      .map(j => (typeof j.writers_id === 'object' && j.writers_id !== null ? j.writers_id as Writer : null))
+      .filter((w): w is Writer => w !== null && w.id !== primaryWriter?.id),
+  ];
+
+  const primaryCrew = isCrew(photo.crew) ? photo.crew : null;
+  const allCrews: Crew[] = [
+    ...(primaryCrew ? [primaryCrew] : []),
+    ...(photo.crews ?? [])
+      .map(j => (typeof j.crews_id === 'object' && j.crews_id !== null ? j.crews_id as Crew : null))
+      .filter((c): c is Crew => c !== null && c.id !== primaryCrew?.id),
+  ];
 
   const styleTags = (photo.style_tags ?? [])
     .map((st) => {
