@@ -27,7 +27,7 @@ export default function CommentSection({ photoId }: CommentSectionProps) {
     setIsLoggedIn(!!token);
 
     // Kommentare laden
-    fetch(`/api/comments?photo_id=${photoId}`)
+    fetch(`/api/comments?photo_id=${String(photoId)}`)
       .then(r => r.json())
       .then(data => setComments(data.comments ?? []))
       .catch(() => setComments([]))
