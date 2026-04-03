@@ -20,7 +20,12 @@ function pickFeatured(photos: Photo[], n: number): Photo[] {
 }
 
 async function FeaturedMosaic() {
-  const photos = await getApprovedPhotos({ limit: 48 });
+  let photos: Awaited<ReturnType<typeof getApprovedPhotos>> = [];
+  try {
+    photos = await getApprovedPhotos({ limit: 48 });
+  } catch {
+    return null; // Directus offline → Seite zeigt einfach kein Mosaic
+  }
   const featured = pickFeatured(photos, 5);
   if (featured.length === 0) return null;
 
