@@ -5,7 +5,7 @@ import { getApprovedPhotos, getArchiveStats, getFileUrl } from '@/lib/directus';
 import type { Photo } from '@/types/directus';
 import { isWriter, isDirectusFile } from '@/types/directus';
 
-export const revalidate = 3600;
+export const dynamic = 'force-dynamic';
 
 // Deterministischer Shuffle – wechselt jede Stunde (ISR-freundlich)
 function pickFeatured(photos: Photo[], n: number): Photo[] {
