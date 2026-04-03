@@ -73,19 +73,26 @@ export async function POST(req: NextRequest) {
     const is_legal_wall = formData.get('is_legal_wall') === 'true';
     const style_tag_ids = formData.getAll('style_tags') as string[];
 
-    // Writer und Crew als UUID-Referenzen auflösen (anlegen falls nicht vorhanden)
-    const writerId = writerTag ? await getOrCreateWriter(writerTag) : null;
-    const crewId = crewName ? await getOrCreateCrew(crewName) : null;
+    // Komma-getrennte Writer und Crews auflösen (je anlegen falls nicht vorhanden)
+    const writerTags = writerTag
+      ? writerTag.split(',').map(t => t.trim()).filter(Boolean)
+      : [];
+    const crewNames = crewName
+      ? crewName.split(',').map(t => t.trim()).filter(Boolean)
+      : [];
+
+    const writerIds = await Promise.all(writerTags.map(t => getOrCreateWriter(t)));
+    const crewIds = await Promise.all(crewNames.map(n => getOrCreateCrew(n)));
 
     const photoPayload: Record<string, unknown> = {
       file: directusFile.id,
       moderation_status: 'pending',
       flagged: false,
       is_legal_wall,
+      // Primär-Writer/-Crew für Abwärtskompatibilität
+      writer: writerIds[0] ?? null,
+      crew: crewIds[0] ?? null,
     };
-
-    if (writerId) photoPayload.writer = writerId;
-    if (crewId) photoPayload.crew = crewId;
     if (location_city) photoPayload.location_city = location_city;
     if (location_country) photoPayload.location_country = location_country;
     if (year) photoPayload.year = parseInt(year, 10);
