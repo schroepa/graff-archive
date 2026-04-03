@@ -19,7 +19,7 @@ const nextConfig: NextConfig = {
       {
         protocol: "http",
         hostname: "streetfiles.duckdns.org",
-        port: "8056",
+        port: "",
         pathname: "/assets/**",
       },
     ],
