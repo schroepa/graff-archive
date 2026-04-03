@@ -46,9 +46,10 @@ export async function POST(req: NextRequest) {
   const body = await req.json();
   const { photo_id, text } = body;
 
-  if (!photo_id || typeof photo_id !== 'string') {
+  if (!photo_id && photo_id !== 0) {
     return NextResponse.json({ error: 'photo_id fehlt.' }, { status: 400 });
   }
+  const photoIdStr = String(photo_id);
   if (!text || typeof text !== 'string' || text.trim().length === 0) {
     return NextResponse.json({ error: 'Kommentar darf nicht leer sein.' }, { status: 400 });
   }
