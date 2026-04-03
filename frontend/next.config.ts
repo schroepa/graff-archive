@@ -19,11 +19,9 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // eslint-Option wurde in Next.js 16 entfernt
   typescript: {
     ignoreBuildErrors: true,
-  },
-  eslint: {
-    ignoreDuringBuilds: true,
   },
 };
 
