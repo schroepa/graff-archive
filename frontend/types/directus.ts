@@ -49,6 +49,26 @@ export interface DirectusFile {
   height: number | null;
 }
 
+export interface SfUser {
+  id: string;
+  tag: string;
+  password_hash: string;
+  verified: boolean;
+  challenge_code: string | null;
+  handstyle_file: string | null;
+  bio: string | null;
+  origin: string | null;
+  active_since: number | null;
+  created_week_hash: string | null;
+}
+
+export interface SfSession {
+  id: string;
+  user_id: string;
+  token_hash: string;
+  expires_at: string;
+}
+
 // Hilfsfunktionen für Type Narrowing
 export function isWriter(v: string | Writer | null): v is Writer {
   return typeof v === 'object' && v !== null && 'tag' in v;

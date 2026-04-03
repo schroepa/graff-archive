@@ -14,7 +14,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="de" style={{ background: "var(--bg)" }}>
+    <html lang="de" style={{ background: "var(--bg)" }} suppressHydrationWarning>
       <body
         className="min-h-screen flex flex-col"
         style={{ background: "var(--bg)", color: "var(--text-primary)" }}

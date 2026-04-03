@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import NavAuth from './NavAuth';
 
 export default function NavigationBar() {
   return (
@@ -26,20 +27,7 @@ export default function NavigationBar() {
           >
             Archiv
           </Link>
-          <Link
-            href="/upload"
-            style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: '11px',
-              color: 'var(--bg)',
-              background: 'var(--accent)',
-              padding: '4px 12px',
-              letterSpacing: '0.1em',
-            }}
-            className="uppercase font-bold hover:opacity-90 transition-opacity"
-          >
-            Upload
-          </Link>
+          <NavAuth />
         </div>
       </div>
     </nav>

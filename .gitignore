@@ -33,6 +33,9 @@ Thumbs.db
 # Docker volumes (nicht committen, lokal)
 # docker-compose.override.yml ist ok zu committen
 
+# Claude Code lokale Einstellungen (Hook-Konfiguration)
+.claude/settings.local.json
+
 # Secrets – NIEMALS committen
 *.pem
 *.key
