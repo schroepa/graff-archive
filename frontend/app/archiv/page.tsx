@@ -1,14 +1,24 @@
+import Link from 'next/link';
 import { getApprovedPhotos } from '@/lib/directus';
 import PhotoGrid from '@/components/PhotoGrid';
 
 export const revalidate = 60;
 
-export default async function FeedPage() {
+interface Props {
+  searchParams: Promise<{ city?: string; country?: string; year?: string }>;
+}
+
+export default async function ArchivPage({ searchParams }: Props) {
+  const params = await searchParams;
+  const city = params.city;
+  const country = params.country;
+  const year = params.year ? parseInt(params.year) : undefined;
+
   let photos: Awaited<ReturnType<typeof getApprovedPhotos>> = [];
   let error: string | null = null;
 
   try {
-    photos = await getApprovedPhotos({ limit: 48 });
+    photos = await getApprovedPhotos({ limit: 96, city, year });
   } catch (err) {
     const message = err instanceof Error ? err.message : '';
     error = message.includes('ECONNREFUSED')
@@ -16,59 +26,62 @@ export default async function FeedPage() {
       : 'Fehler beim Laden des Archivs.';
   }
 
+  const isFiltered = city || country || year;
+  const filterLabel = [city, country, year].filter(Boolean).join(' · ');
+
   return (
     <div>
       {/* Header */}
       <div
         style={{ borderBottom: '1px solid var(--bg-border)' }}
-        className="px-4 py-8 max-w-7xl mx-auto"
+        className="px-4 py-6 max-w-7xl mx-auto"
       >
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-          <div>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="flex items-baseline gap-4">
             <h1
-              style={{
-                fontFamily: 'var(--font-mono)',
-                color: 'var(--text-primary)',
-                fontSize: '11px',
-              }}
-              className="uppercase tracking-widest mb-2"
-            >
-              Archiv
-            </h1>
-            <p
-              style={{ color: 'var(--text-dim)', fontSize: '12px', fontFamily: 'var(--font-mono)' }}
+              style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-primary)', fontSize: '11px' }}
               className="uppercase tracking-widest"
             >
-              {photos.length > 0
-                ? `${photos.length} Einträge geladen`
-                : error
-                ? 'Offline'
-                : 'Keine Einträge'}
-            </p>
+              {isFiltered ? (
+                <>
+                  <Link href="/archiv" style={{ color: 'var(--text-dim)' }} className="hover:text-[var(--accent)] transition-colors">
+                    Archiv
+                  </Link>
+                  <span style={{ color: 'var(--text-dim)' }}> / </span>
+                  <span style={{ color: 'var(--accent)' }}>{filterLabel}</span>
+                </>
+              ) : (
+                'Archiv'
+              )}
+            </h1>
+            <span style={{ color: 'var(--text-dim)', fontSize: '10px', fontFamily: 'var(--font-mono)' }}>
+              {error ? 'Offline' : `${photos.length} Einträge`}
+            </span>
           </div>
 
-          <p
-            style={{
-              fontFamily: 'var(--font-mono)',
-              color: 'var(--text-dim)',
-              fontSize: '10px',
-              maxWidth: '420px',
-              textAlign: 'right',
-              lineHeight: '1.6',
-            }}
-            className="uppercase tracking-wide hidden sm:block"
-          >
-            Kein Algorithmus. Kein Like-System. Chronologisch.
-          </p>
+          <div className="flex items-center gap-4">
+            <Link
+              href="/karte"
+              style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-secondary)', fontSize: '10px' }}
+              className="uppercase tracking-widest hover:text-[var(--accent)] transition-colors"
+            >
+              → Karte
+            </Link>
+            <span
+              style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-dim)', fontSize: '10px' }}
+              className="uppercase tracking-widest hidden sm:block"
+            >
+              Kein Algorithmus. Chronologisch.
+            </span>
+          </div>
         </div>
       </div>
 
-      {/* Fehler */}
       {error && (
         <div
           style={{
-            background: 'rgba(255,68,68,0.08)',
-            border: '1px solid rgba(255,68,68,0.3)',
+            background: 'rgba(193,0,0,0.08)',
+            border: '1px solid rgba(193,0,0,0.3)',
             fontFamily: 'var(--font-mono)',
             color: 'var(--danger)',
             fontSize: '12px',
@@ -79,12 +92,8 @@ export default async function FeedPage() {
         </div>
       )}
 
-      {/* Grid */}
       <div className="max-w-7xl mx-auto">
-        <PhotoGrid
-          photos={photos}
-          emptyMessage="Archiv leer – erster Upload ausstehend."
-        />
+        <PhotoGrid photos={photos} emptyMessage="Keine Fotos für diesen Filter." />
       </div>
     </div>
   );
