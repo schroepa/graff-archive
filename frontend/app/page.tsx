@@ -100,7 +100,12 @@ async function FeaturedMosaic() {
 }
 
 async function ArchiveStats() {
-  const stats = await getArchiveStats();
+  let stats = { photos: 0, cities: 0, writers: 0 };
+  try {
+    stats = await getArchiveStats();
+  } catch {
+    return null;
+  }
   return (
     <div className="grid grid-cols-3 gap-px" style={{ background: 'var(--bg-border)' }}>
       {[
