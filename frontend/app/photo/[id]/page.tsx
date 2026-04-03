@@ -169,6 +169,11 @@ export default async function PhotoPage({ params }: Props) {
           </p>
         </div>
       </div>
+
+      {/* Kommentare – volle Breite unterhalb des Grids */}
+      <div className="mt-10 max-w-2xl">
+        <CommentSection photoId={photo.id} />
+      </div>
     </div>
   );
 }
