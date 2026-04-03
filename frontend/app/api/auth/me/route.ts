@@ -1,16 +1,27 @@
 import { NextResponse } from 'next/server';
-import { getUserById } from '@/lib/directus';
-import { getTokenFromHeader, verifyToken } from '@/lib/auth';
+import { getUserById, getSessionByTokenHash } from '@/lib/directus';
+import { getTokenFromHeader, verifyToken, hashToken } from '@/lib/auth';
 
-export async function GET(req: Request) {
+async function authenticate(req: Request) {
   const token = getTokenFromHeader(req);
-  if (!token) {
-    return NextResponse.json({ error: 'Nicht authentifiziert.' }, { status: 401 });
-  }
+  if (!token) return null;
 
   const payload = await verifyToken(token);
-  if (!payload?.sub) {
-    return NextResponse.json({ error: 'Ungültiger Token.' }, { status: 401 });
+  if (!payload?.sub) return null;
+
+  // Session in DB prüfen + Ablaufdatum validieren
+  const tokenHash = hashToken(token);
+  const session = await getSessionByTokenHash(tokenHash);
+  if (!session) return null;
+  if (new Date(session.expires_at) < new Date()) return null;
+
+  return payload;
+}
+
+export async function GET(req: Request) {
+  const payload = await authenticate(req);
+  if (!payload) {
+    return NextResponse.json({ error: 'Nicht authentifiziert oder Session abgelaufen.' }, { status: 401 });
   }
 
   const user = await getUserById(payload.sub);
@@ -29,19 +40,13 @@ export async function GET(req: Request) {
 }
 
 export async function PATCH(req: Request) {
-  const token = getTokenFromHeader(req);
-  if (!token) {
-    return NextResponse.json({ error: 'Nicht authentifiziert.' }, { status: 401 });
-  }
-
-  const payload = await verifyToken(token);
-  if (!payload?.sub) {
-    return NextResponse.json({ error: 'Ungültiger Token.' }, { status: 401 });
+  const payload = await authenticate(req);
+  if (!payload) {
+    return NextResponse.json({ error: 'Nicht authentifiziert oder Session abgelaufen.' }, { status: 401 });
   }
 
   const body = await req.json();
 
-  // Nur diese Felder darf der User selbst editieren
   const allowed = ['bio', 'origin', 'active_since'] as const;
   const update: Record<string, unknown> = {};
   for (const key of allowed) {
