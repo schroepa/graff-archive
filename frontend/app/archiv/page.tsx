@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { getApprovedPhotos } from '@/lib/directus';
 import PhotoGrid from '@/components/PhotoGrid';
 
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 
 interface Props {
   searchParams: Promise<{ city?: string; country?: string; year?: string }>;
