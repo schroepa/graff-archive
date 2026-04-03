@@ -65,13 +65,17 @@ export async function POST(req: NextRequest) {
     const { data: directusFile } = await uploadRes.json();
 
     // --- Photo-Record in Directus anlegen ---
-    const writer = formData.get('writer') as string | null;
-    const crew = formData.get('crew') as string | null;
+    const writerTag = (formData.get('writer_tag') as string | null)?.trim() || null;
+    const crewName = (formData.get('crew_name') as string | null)?.trim() || null;
     const location_city = formData.get('location_city') as string | null;
     const location_country = formData.get('location_country') as string | null;
     const year = formData.get('year') as string | null;
     const is_legal_wall = formData.get('is_legal_wall') === 'true';
     const style_tag_ids = formData.getAll('style_tags') as string[];
+
+    // Writer und Crew als UUID-Referenzen auflösen (anlegen falls nicht vorhanden)
+    const writerId = writerTag ? await getOrCreateWriter(writerTag) : null;
+    const crewId = crewName ? await getOrCreateCrew(crewName) : null;
 
     const photoPayload: Record<string, unknown> = {
       file: directusFile.id,
@@ -80,8 +84,8 @@ export async function POST(req: NextRequest) {
       is_legal_wall,
     };
 
-    if (writer) photoPayload.writer = writer;
-    if (crew) photoPayload.crew = crew;
+    if (writerId) photoPayload.writer = writerId;
+    if (crewId) photoPayload.crew = crewId;
     if (location_city) photoPayload.location_city = location_city;
     if (location_country) photoPayload.location_country = location_country;
     if (year) photoPayload.year = parseInt(year, 10);
