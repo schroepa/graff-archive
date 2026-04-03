@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import NavAuth from './NavAuth';
+import ThemeToggle from './ThemeToggle';
 
 export default function NavigationBar() {
   return (
