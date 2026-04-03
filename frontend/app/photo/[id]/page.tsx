@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getPhoto, getFileUrl } from '@/lib/directus';
-import { isWriter, isCrew, isStyleTag } from '@/types/directus';
+import { isWriter, isCrew, isStyleTag, type Writer, type Crew } from '@/types/directus';
 import BurnerButton from '@/components/BurnerButton';
 import type { Metadata } from 'next';
 
