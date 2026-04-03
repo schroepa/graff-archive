@@ -77,7 +77,7 @@ export async function getApprovedPhotos(options?: {
     })
   );
 
-  return photos as unknown as Photo[];
+  return enrichPhotosWithM2M(photos as unknown as Photo[]);
 }
 
 export async function getPhoto(id: string): Promise<Photo> {
