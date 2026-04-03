@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { getPhoto, getFileUrl } from '@/lib/directus';
 import { isWriter, isStyleTag } from '@/types/directus';
 import BurnerButton from '@/components/BurnerButton';
+import CommentSection from '@/components/CommentSection';
 import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
