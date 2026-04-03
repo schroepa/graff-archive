@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import type { Photo, Writer, Crew } from '@/types/directus';
-import { isWriter, isCrew, isStyleTag } from '@/types/directus';
+import type { Photo } from '@/types/directus';
+import { isStyleTag } from '@/types/directus';
 import { getFileUrl } from '@/lib/directus';
 import BurnerButton from './BurnerButton';
 
