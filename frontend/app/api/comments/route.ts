@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const comment = await createComment({
-      photo_id,
+      photo_id: photoIdStr,
       author_tag: user.tag,
       body: text.trim(),
     });
