@@ -5,8 +5,8 @@ import { aggregateCityLocations, aggregateCountries, geocodeLocations } from '@/
 import type { GeocodedLocation } from '@/lib/geocode';
 import MapView from '@/components/MapView';
 
-// Karte revalidiert einmal täglich – Geocoding ist langsam (1 req/s Nominatim)
-export const revalidate = 86400;
+// Kein Prerendering beim Build – Directus ist zur Build-Zeit nicht erreichbar
+export const dynamic = 'force-dynamic';
 
 async function fetchMapData(): Promise<{
   locations: GeocodedLocation[];
