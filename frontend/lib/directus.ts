@@ -134,6 +134,49 @@ export async function getAllStyleTags(): Promise<StyleTag[]> {
   return tags as unknown as StyleTag[];
 }
 
+// --- Stats ---
+
+export async function getArchiveStats(): Promise<{
+  photos: number;
+  cities: number;
+  writers: number;
+}> {
+  const [photoCount, writerCount] = await Promise.all([
+    directus.request(
+      aggregate('photos', {
+        aggregate: { count: ['id'] },
+        query: { filter: { moderation_status: { _eq: 'approved' } } },
+      })
+    ),
+    directus.request(
+      aggregate('writers', { aggregate: { count: ['id'] } })
+    ),
+  ]);
+
+  // Für Städte: alle approved Photos mit location_city laden und deduplizieren
+  const photosWithCity = await directus.request(
+    readItems('photos', {
+      filter: {
+        moderation_status: { _eq: 'approved' },
+        location_city: { _nnull: true },
+      },
+      fields: ['location_city'],
+      limit: -1,
+    })
+  );
+  const cities = new Set(
+    (photosWithCity as Array<{ location_city: string }>)
+      .map(p => p.location_city)
+      .filter(Boolean)
+  );
+
+  return {
+    photos: Number((photoCount[0] as { count: { id: string } }).count.id) || 0,
+    cities: cities.size,
+    writers: Number((writerCount[0] as { count: { id: string } }).count.id) || 0,
+  };
+}
+
 // --- User-Queries ---
 
 export async function getUserByTag(tag: string): Promise<SfUser | null> {
