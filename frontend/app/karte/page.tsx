@@ -13,7 +13,7 @@ async function fetchMapData(): Promise<{
   topCities: Array<{ city: string; country: string; photoCount: number }>;
   topCountries: Array<{ country: string; photoCount: number }>;
 }> {
-  const photos = await getApprovedPhotos({ limit: -1 });
+  const photos = await getApprovedPhotos({ limit: 500 }); // Directus: -1 nicht zuverlässig im SDK
 
   const cityAgg = aggregateCityLocations(
     photos.map(p => ({
