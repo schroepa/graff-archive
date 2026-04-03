@@ -9,7 +9,7 @@ export async function POST(
 ) {
   const { id } = await params;
 
-  if (!id || !/^[0-9a-f-]{36}$/.test(id)) {
+  if (!id || !/^[0-9a-f-]{36}$|^\d+$/.test(id)) {
     return NextResponse.json({ error: 'Ungültige ID.' }, { status: 400 });
   }
 
